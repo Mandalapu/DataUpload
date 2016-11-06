@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Data Upload</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="zero">0</string>
+    <string name="one">1</string>
+    <string name="two">2</string>
+    <string name="three">3</string>
+    <string name="four">4</string>
+    <string name="five">5</string>
+    <string name="six">6</string>
+    <string name="seven">7</string>
+    <string name="eight">8</string>
+    <string name="nine">9</string>
+    <string name="username_msg">Please enter the User ID to upload the data and click NEXT.</string>
+    <string name="clear">CLEAR</string>
+    <string name="button_str">NEXT</string>
+    <string name="username">Username:</string>
+    <string name="title_activity_second_main">Username Mismatch</string>
+    <string name="msg">The username entered did not match the one entered by the user.\n\nPlease enter the correct username in the first box and the matched username in the second.\n\n Then click on NEXT</string>
+    <string name="correct">Correct Username:</string>
+    <string name="matched">Matched Username:</string>
+    <string name="title_activity_del__data_">Del_Data_Activity</string>
+    <string name="del">DELETE</string>
+    <string name="delmsg">Click on DELETE to remove the uploaded files form the tablet</string>
+    <string name="title_activity_looped">LoopedActivity</string>
+
+</resources>
