@@ -6,6 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.dataupload"
+        multiDexEnabled true
         minSdkVersion 8
         targetSdkVersion 21
     }
@@ -20,6 +21,7 @@ android {
 dependencies {
     compile 'com.android.support:appcompat-v7:21.0.0'
     compile 'com.android.support:support-v4:21.0.0'
+    compile 'com.android.support:multidex:1.0.0'
     compile files('libs/jsch-0.1.53.jar')
     compile files('libs/mysql-connector-java-3.0.17-ga-bin.jar')
 

@@ -1,6 +1,5 @@
 package com.example.dataupload;
 
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -15,9 +14,6 @@ import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.Session;
 import com.jcraft.jsch.SftpATTRS;
-
-
-
 
 import android.app.Activity;
 import android.content.Intent;
@@ -75,9 +71,7 @@ public class MainActivity extends Activity {
 			@Override
 			protected Void doInBackground(Void... params) {
 			String f = Environment.getExternalStorageDirectory()+"/"+user;
-			
-			//STUFF TO CHANGE BELOW
-		    //CHANGE SFTPHOST
+				File folder= new File(f);
 		    //sftp server name-host
 		    String SFTPHOST = "isr-cogusadb.private.isr.umich.edu";
 		    //CHANGE SFTPUSER
@@ -92,7 +86,7 @@ public class MainActivity extends Activity {
 		    String SFTPWORKINGDIR = "uploads/0000_audio";
 		    //CHANGE folder
 		    //path to local folder that contains files to upload
-		    File folder= new File(f);
+
 		    // STUFF TO CHANGE ABOVE
 		    //port 22 for SFTP
 		    int SFTPPORT = 22;
@@ -129,20 +123,20 @@ public class MainActivity extends Activity {
 		        }
 		        catch(Exception e){
 		            System.out.println("Directory doesnt exist in the server, it will be created");
-		            Log.w("status","Directory doesnt exist in the server, it will be created");
+		            Log.d("status","Directory doesnt exist in the server, it will be created");
 		        }
 		
 		        if(dir_exists!=null){
 		            //cd to existing directory on the server
 		            channelSftp.cd(SFTPWORKINGDIR);
 		            System.out.println("Directory "+SFTPWORKINGDIR+" exists on the server.");
-		            Log.w("status","Directory "+SFTPWORKINGDIR+" exists on the server.");
+		            Log.d("status","Directory "+SFTPWORKINGDIR+" exists on the server.");
 		        }
 		        else{
 		            //create remote directory
 		            channelSftp.mkdir(SFTPWORKINGDIR);
 		            System.out.println("Directory "+SFTPWORKINGDIR+" doesn't exist on the server, creating directory.");
-		            Log.w("status","Directory "+SFTPWORKINGDIR+" doesn't exist on the server, creating directory.");
+		            Log.d("status","Directory "+SFTPWORKINGDIR+" doesn't exist on the server, creating directory.");
 		        }
 		        //selecting each file from the folder and uploading it
 		        int a=0;
@@ -151,11 +145,11 @@ public class MainActivity extends Activity {
 					if(each_file.getName().contains(".mp3")) {
 						UploadData.setaudio(each_file.getName(), a);a++;
 						System.out.println("Uploading " +each_file.toString());
-						Log.w("status","Uploading " +each_file.toString());
+						Log.d("status","Uploading " +each_file.toString());
 						//System.out.println();
 						channelSftp.put(new FileInputStream(each_file), each_file.getName());
 						System.out.println("Done uploading"+each_file.toString());
-						Log.w("status","Done uploading"+each_file.toString());}
+						Log.d("status","Done uploading"+each_file.toString());}
 				}
 				channelSftp.exit();
 		        session.disconnect();
@@ -169,53 +163,52 @@ public class MainActivity extends Activity {
 			}
 				if( !stat )
 				{
-					Log.w("Upload audiofile failed","");
+					Log.d("Upload audiofile failed","");
 				}
-		    try{
+				else
+				{
+					Log.d("Status message", "Uploading the audio file successful.");
+				}
+				// TODO: 1/26/2017 Need to uncomment the SFTP section and need to bring a efficient delete strategy for the files uploaded.
+				try{
 			    Class.forName("com.mysql.jdbc.Driver").newInstance();
 			    
 			}catch(Exception e){
-				Log.w("jdbc driver failure", "");
+				Log.d("jdbc driver failure", "");
 				stat=false;
 			}
-			//isr-cogusadb.private.isr.umich.edu
-			//198.162.17.243
-				boolean uploadJsonStatus = true;
+                boolean uploadJsonStatus = true;
 			try {
-				String url = "jdbc:mysql://isr-cogusadb.private.isr.umich.edu:3306/cogusa";
 
-				//String url = "jdbc:mysql://cogweb.usc.edu:3306/project_talent";
-				String username = "cogusauser";
-				//changed credentials
-				//userName = root
-				//password = 396Bodz#
-				//String username = "cogusauser";
-				//dbname = project_talent
-				String password = "scarF@ce!";
-				//String password ="396Bodz#";
+				//String url = "jdbc:mysql://isr-cogusadb.private.isr.umich.edu:3306/project_talent";
+				String url = "jdbc:mysql://projecttalent.c6mmpnkgm3pa.us-west-2.rds.amazonaws.com:3306/project_talent";
+                //Updated credentials for the DBA.
+				String username = "PTuser";
+				String password ="PTpasscode";
 				Connection DbConn = DriverManager.getConnection(url, username, password);
-				Log.w("Connection", "open");
+				Log.d("Database", "Connection established");
+				Log.d("Connection", "open");
 				Statement stmt = DbConn.createStatement();
 				String loginquery, aquery, dquery, rfquery, vequery, pvquery, nsquery, arquery, spquery, swquery, wquery, trackquery, voquery;
 				for (File each_file : folder.listFiles()) {
-					if (each_file.getName().contains("final_data")) {
+					if (each_file.getName().contains("final_data") && (each_file.getName().contains(".json")) ) {
+						// TODO: 1/26/2017  Need to add another condition where only the files from the correspoding user is uploaded.
 						uploadJsonStatus = true;
 						//TODO need to check the value of the filename that is getting genrated.
-						System.out.println("File name:" + each_file.getName());
+						Log.d("MainActivity-file name", "File name:" + each_file.getName());
 						try {
+                            //This line may cause several exceptions as the queries get constructed.
 							UploadData.uploadJson(user, each_file.getName());
-						} catch (IOException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
+						} catch (IOException e) {
+							e.printStackTrace();
 							stat = false;
 							uploadJsonStatus = false;
-							System.out.println("failed while performing upload JSON action");
-						} catch (JSONException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
+							Log.d("MainActivity", "failed while performing upload JSON action");
+						} catch (JSONException e) {
+							e.printStackTrace();
 							stat = false;
 							uploadJsonStatus = false;
-							System.out.println("failed while performing upload JSON action");
+                            Log.d("MainActivity", "failed while performing upload JSON action");
 						}
 						try {
 							loginquery = UploadData.getlogin();
@@ -228,23 +221,23 @@ public class MainActivity extends Activity {
 							wquery = UploadData.getw();
 							trackquery = UploadData.gettrack();
 							stmt.executeUpdate(loginquery);
-							Log.w("dbstat", "login done");
+							Log.d("dbstat", "login done");
 							stmt.executeUpdate(dquery);
-							Log.w("dbstat", "SectionD done");
+							Log.d("dbstat", "SectionD done");
 							stmt.executeUpdate(rfquery);
-							Log.w("dbstat", "SectionRF done");
+							Log.d("dbstat", "SectionRF done");
 							stmt.executeUpdate(voquery);
-							Log.w("dbstat", "SectionVO done");
+							Log.d("dbstat", "SectionVO done");
 							stmt.executeUpdate(nsquery);
-							Log.w("dbstat", "SectionNS done");
+							Log.d("dbstat", "SectionNS done");
 							stmt.executeUpdate(arquery);
-							Log.w("dbstat", "SectionAR done");
+							Log.d("dbstat", "SectionAR done");
 							stmt.executeUpdate(spquery);
-							Log.w("dbstat", "SectionSP done");
+							Log.d("dbstat", "SectionSP done");
 							stmt.executeUpdate(wquery);
-							Log.w("dbstat", "SectionW done");
+							Log.d("dbstat", "SectionW done");
 							stmt.executeUpdate(trackquery);
-							Log.w("dbstat", "Track User");
+							Log.d("dbstat", "Track User");
 							DbConn.close();
 						}catch(Exception e)
 						{
@@ -254,12 +247,14 @@ public class MainActivity extends Activity {
 						}
 						if( !uploadJsonStatus )
 						{
-							Log.w("upload json-fail", each_file.getName());
-							System.out.println("upload json failed for file name:" +each_file.getName());
+							Log.d("upload json-fail", each_file.getName());
+							Log.d("MainActivity", "upload json failed for file name:" +each_file.getName());
 						}
 						else
 						{
 							//TODO need to delete the corresponding file from the direcotry.
+							Log.d("Status", "There are no errors while publishing this json file to the database");
+							Log.d("Deletions", "About to delete the file after uploading the current file contents to database");
 							each_file.delete();
 						}
 					}
@@ -267,13 +262,14 @@ public class MainActivity extends Activity {
 			}
 			catch(Exception e)
 			{
-				Log.w("Error connection", "" + e.getMessage());
+				Log.d("Error connection", "" + e.getMessage());
 				stat = false;
 				uploadJsonStatus = false;
 			}
-				if( !stat && !uploadJsonStatus )
+				if( stat && uploadJsonStatus )
 				{
 					//TODO delete all the files in the direcory and make it empty
+					// TODO: 1/26/2017 Have the Deletion activity code here instead of another file.
 				}
 				return null;
 		}
@@ -281,8 +277,14 @@ public class MainActivity extends Activity {
 			super.onPostExecute(result);
 			ProgressBar pb = (ProgressBar) findViewById(R.id.progressBar1);
 	        pb.setVisibility(View.INVISIBLE);
-			if(!stat)
+			if(!stat) {
 				Toast.makeText(getBaseContext(), "DATA UPLOAD UNSUCCESSFUL", Toast.LENGTH_LONG).show();
+				Log.d("message", "the Data upload is unsuccessful");
+			}
+			else
+			{
+				Toast.makeText(getBaseContext(), "DATA UPLOAD is SUCCESSFUL!!", Toast.LENGTH_LONG).show();
+			}
 		}	    
 	}
 

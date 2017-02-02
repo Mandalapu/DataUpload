@@ -13,6 +13,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.os.Environment;
+import android.util.Log;
 
 
 public class UploadData {
@@ -46,10 +47,12 @@ public class UploadData {
 	public static void uploadJson(String u, String filename) throws IOException, JSONException {
 		user=u;
 		String f = Environment.getExternalStorageDirectory()+"/"+user+"/"+filename;
+
 		 BufferedReader reader = new BufferedReader( new FileReader (f));
 		 String content = "",line=null;
 		 while ((line=reader.readLine())!=null)
-			 content+=line;
+			 content += line;
+		Log.d("JSON content", content);
 		 reader.close();
 		 obj = new JSONObject(content);
 		 //user=Integer.parseInt(uid);
@@ -57,6 +60,7 @@ public class UploadData {
 		 //forming all the queries
 		 
 		 //sectionA();
+		Log.d("Upload Data Activity", "Calling each section to form the queries");
 		sectionAR();
 		//sectionSW();
 		//sectionPV();
@@ -69,6 +73,7 @@ public class UploadData {
 		tasktrack();
 		login();
 		sectionNS();
+		Log.d("UploadData Activity", "All the queries are generated");
 	}
 	public static void login() {
 		loginquery="INSERT INTO `log_in` (`user_id`) VALUES ("+user+")";
@@ -151,6 +156,7 @@ public class UploadData {
 //		else d180=-1;
 
 		dquery = "INSERT INTO `self_rated_memory`(`user_id`, `D106_ans`, `D106_start_time`, `D106_end_time`, `D121_ans`, `D121_start_time`, `D121_end_time`, `D148_ans`, `D148_start_time`, `D148_end_time`) VALUES ("+user+",'"+d106+"','"+d106_start+"','"+d106_end+"','"+d121+"','"+d121_start+"','"+d121_end+"','"+d148+"','"+d148_start+"','"+d148_end+"')";
+		Log.d("UploadActivity-dquery", dquery);
 	}
 
 	/**
@@ -167,6 +173,7 @@ public class UploadData {
 //		rfend3=obj.getString("rf301_end");
 		String rfcode1="uploads/"+user+"_audio/audio_rf101_"+user+".mp3";//rfcode2="uploads/"+user+"_audio/audio_rf201_"+user+".mp3",rfcode3="uploads/"+user+"_audio/audio_rf301_"+user+".mp3";
 		rfquery="INSERT INTO `retrieval_fluency` (`user_id`, `RF101_ans`, `RF101_start_time`, `RF101_end_time`) VALUES ("+user+", '"+rfcode1+"', '"+rfstart1+"', '"+rfend1+"')";
+		Log.d("UploadActivity-rfquery", rfquery);
 	}
 
 	public static void sectionNS() throws JSONException{
@@ -196,7 +203,9 @@ public class UploadData {
 		if(sum==3){
 			nsquery="INSERT INTO `number_series` (`user_id`, `q_1_code`, `q_1_ans`, `q_1_start_time`, `q_1_end_time`, `q_1_score`, `q_2_code`, `q_2_ans`, `q_2_start_time`, `q_2_end_time`, `q_2_score`, `q_3_code`, `q_3_ans`, `q_3_start_time`, `q_3_end_time`, `q_3_score`, `q_4_code`, `q_4_ans`, `q_4_start_time`, `q_4_end_time`, `q_4_score`, `q_5_code`, `q_5_ans`, `q_5_start_time`, `q_5_end_time`, `q_5_score`, `q_6_code`, `q_6_ans`, `q_6_ans_sub`, `q_6_start_time`, `q_6_end_time`, `q_6_score`) VALUES ("+user+", '"+qn1+"', "+an1+", '"+qn1s+"', '"+qn1e+"', "+sn1+", '"+qn2+"', "+an2+", '"+qn2s+"', '"+qn2e+"', "+sn2+",'"+qn3+"', "+an3+", '"+qn3s+"', '"+qn3e+"', "+sn3+",'"+qn4+"', "+an4+", '"+qn4s+"', '"+qn4e+"', "+sn4+",'"+qn5+"', "+an5+", '"+qn5s+"', '"+qn5e+"', "+sn5+",'"+qn6+"', "+ans1+", "+ans2+", '"+qn6s+"', '"+qn6e+"', "+sn6+")";
 		}
-		else nsquery="INSERT INTO `number_series` (`user_id`, `q_1_code`, `q_1_ans`, `q_1_start_time`, `q_1_end_time`, `q_1_score`, `q_2_code`, `q_2_ans`, `q_2_start_time`, `q_2_end_time`, `q_2_score`, `q_3_code`, `q_3_ans`, `q_3_start_time`, `q_3_end_time`, `q_3_score`, `q_4_code`, `q_4_ans`, `q_4_start_time`, `q_4_end_time`, `q_4_score`, `q_5_code`, `q_5_ans`, `q_5_start_time`, `q_5_end_time`, `q_5_score`, `q_6_code`, `q_6_ans`, `q_6_start_time`, `q_6_end_time`, `q_6_score`) VALUES ("+user+", '"+qn1+"', "+an1+", '"+qn1s+"', '"+qn1e+"', "+sn1+", '"+qn2+"', "+an2+", '"+qn2s+"', '"+qn2e+"', "+sn2+",'"+qn3+"', "+an3+", '"+qn3s+"', '"+qn3e+"', "+sn3+",'"+qn4+"', "+an4+", '"+qn4s+"', '"+qn4e+"', "+sn4+",'"+qn5+"', "+an5+", '"+qn5s+"', '"+qn5e+"', "+sn5+",'"+qn6+"', "+an6+", '"+qn6s+"', '"+qn6e+"', "+sn6+")";
+		else
+			nsquery="INSERT INTO `number_series` (`user_id`, `q_1_code`, `q_1_ans`, `q_1_start_time`, `q_1_end_time`, `q_1_score`, `q_2_code`, `q_2_ans`, `q_2_start_time`, `q_2_end_time`, `q_2_score`, `q_3_code`, `q_3_ans`, `q_3_start_time`, `q_3_end_time`, `q_3_score`, `q_4_code`, `q_4_ans`, `q_4_start_time`, `q_4_end_time`, `q_4_score`, `q_5_code`, `q_5_ans`, `q_5_start_time`, `q_5_end_time`, `q_5_score`, `q_6_code`, `q_6_ans`, `q_6_start_time`, `q_6_end_time`, `q_6_score`) VALUES ("+user+", '"+qn1+"', "+an1+", '"+qn1s+"', '"+qn1e+"', "+sn1+", '"+qn2+"', "+an2+", '"+qn2s+"', '"+qn2e+"', "+sn2+",'"+qn3+"', "+an3+", '"+qn3s+"', '"+qn3e+"', "+sn3+",'"+qn4+"', "+an4+", '"+qn4s+"', '"+qn4e+"', "+sn4+",'"+qn5+"', "+an5+", '"+qn5s+"', '"+qn5e+"', "+sn5+",'"+qn6+"', "+an6+", '"+qn6s+"', '"+qn6e+"', "+sn6+")";
+		Log.d("UploadActivity-nsquery", nsquery);
 	}
 
 	/**
@@ -222,6 +231,7 @@ public class UploadData {
 		qn4e=obj.getString(qn4+"_end");qn5e=obj.getString(qn5+"_end");qn6e=obj.getString(qn6+"_end");
 		//make ar query
 		arquery="INSERT INTO `abstract_reasoning` (`user_id`, `q_1_code`, `q_1_ans`, `q_1_start_time`, `q_1_end_time`, `q_1_score`, `q_2_code`, `q_2_ans`, `q_2_start_time`, `q_2_end_time`, `q_2_score`, `q_3_code`, `q_3_ans`, `q_3_start_time`, `q_3_end_time`, `q_3_score`, `q_4_code`, `q_4_ans`, `q_4_start_time`, `q_4_end_time`, `q_4_score`, `q_5_code`, `q_5_ans`, `q_5_start_time`, `q_5_end_time`, `q_5_score`, `q_6_code`, `q_6_ans`, `q_6_start_time`, `q_6_end_time`, `q_6_score`) VALUES ("+user+", '"+qn1+"', "+an1+", '"+qn1s+"', '"+qn1e+"', "+sn1+", '"+qn2+"', "+an2+", '"+qn2s+"', '"+qn2e+"', "+sn2+",'"+qn3+"', "+an3+", '"+qn3s+"', '"+qn3e+"', "+sn3+",'"+qn4+"', "+an4+", '"+qn4s+"', '"+qn4e+"', "+sn4+",'"+qn5+"', "+an5+", '"+qn5s+"', '"+qn5e+"', "+sn5+",'"+qn6+"', "+an6+", '"+qn6s+"', '"+qn6e+"', "+sn6+")";
+		Log.d("Ar-Query", arquery);
 	}
 
 	/**
@@ -250,6 +260,7 @@ public class UploadData {
 		qn4e=obj.getString(qn4+"_end");qn5e=obj.getString(qn5+"_end");qn6e=obj.getString(qn6+"_end");
 		//make vo query
 		voquery="INSERT INTO `vocab` (`user_id`, `q_1_code`, `q_1_ans`, `q_1_start_time`, `q_1_end_time`, `q_1_score`, `q_2_code`, `q_2_ans`, `q_2_start_time`, `q_2_end_time`, `q_2_score`, `q_3_code`, `q_3_ans`, `q_3_start_time`, `q_3_end_time`, `q_3_score`, `q_4_code`, `q_4_ans`, `q_4_start_time`, `q_4_end_time`, `q_4_score`, `q_5_code`, `q_5_ans`, `q_5_start_time`, `q_5_end_time`, `q_5_score`, `q_6_code`, `q_6_ans`, `q_6_start_time`, `q_6_end_time`, `q_6_score`) VALUES ("+user+", '"+qn1+"', "+an1+", '"+qn1s+"', '"+qn1e+"', "+sn1+", '"+qn2+"', "+an2+", '"+qn2s+"', '"+qn2e+"', "+sn2+",'"+qn3+"', "+an3+", '"+qn3s+"', '"+qn3e+"', "+sn3+",'"+qn4+"', "+an4+", '"+qn4s+"', '"+qn4e+"', "+sn4+",'"+qn5+"', "+an5+", '"+qn5s+"', '"+qn5e+"', "+sn5+",'"+qn6+"', "+an6+", '"+qn6s+"', '"+qn6e+"', "+sn6+")";
+		Log.d("voquery", voquery);
 	}
 
 	/**
@@ -275,7 +286,7 @@ public class UploadData {
 		qn4e=obj.getString(qn4+"_end");qn5e=obj.getString(qn5+"_end");qn6e=obj.getString(qn6+"_end");
 		//make sp query
 		spquery="INSERT INTO `spatial_visualization` (`user_id`, `q_1_code`, `q_1_ans`, `q_1_start_time`, `q_1_end_time`, `q_1_score`, `q_2_code`, `q_2_ans`, `q_2_start_time`, `q_2_end_time`, `q_2_score`, `q_3_code`, `q_3_ans`, `q_3_start_time`, `q_3_end_time`, `q_3_score`, `q_4_code`, `q_4_ans`, `q_4_start_time`, `q_4_end_time`, `q_4_score`, `q_5_code`, `q_5_ans`, `q_5_start_time`, `q_5_end_time`, `q_5_score`, `q_6_code`, `q_6_ans`, `q_6_start_time`, `q_6_end_time`, `q_6_score`) VALUES ("+user+", '"+qn1+"', "+an1+", '"+qn1s+"', '"+qn1e+"', "+sn1+", '"+qn2+"', "+an2+", '"+qn2s+"', '"+qn2e+"', "+sn2+",'"+qn3+"', "+an3+", '"+qn3s+"', '"+qn3e+"', "+sn3+",'"+qn4+"', "+an4+", '"+qn4s+"', '"+qn4e+"', "+sn4+",'"+qn5+"', "+an5+", '"+qn5s+"', '"+qn5e+"', "+sn5+",'"+qn6+"', "+an6+", '"+qn6s+"', '"+qn6e+"', "+sn6+")";
-		
+		Log.d("spquery", spquery);
 	}
 
 	/**
@@ -337,6 +348,7 @@ public class UploadData {
 		else w015_sub=-1;
 
 		wquery = "INSERT INTO `wrap_up`(`user_id`, `use_email`, `email_usage`, `web_usage`, `tech_usage_desktop`, `tech_usage_laptop`, `tech_usage_tablet`, `tech_usage_ereader`, `tech_usage_smartphone`, `tech_usage_mobile`, `W015_ans`, `W015_sub_ans`, `W016_ans`, `W017_ans`, `W017_sub_ans`, `W018_ans`, `W019_ans`, `W020_ans`, `W021_ans`, `W022_ans`, `enjoy`, `fatigue`, `multitask`, `pol_orient`, `W011_ans`, `W012_ans`) VALUES ("+user+",'"+w001+"','"+w002+"','"+w003+"','"+w023_desktop+"','"+w023_laptop+"','"+w023_tablet+"','"+w023_ereader+"','"+w023_smartphone+"','"+w023_mobile+"','"+w015+"',"+w015_sub+",'"+w016+"','"+w017+"','"+w017_sub+"',"+w018+","+w019+","+w020+","+w021+","+w022+",'"+w004+"','"+w007+"','"+w008+"','"+w010+"','"+w011+"','"+w012+"')";
+		Log.d("WrapQuery", wquery);
 	}
 
 
@@ -366,5 +378,6 @@ public class UploadData {
 		String secw_s=obj.getString("sec_wrap_start");
 		String secw_e=obj.getString("sec_wrap_end");
 		trackquery="INSERT INTO `task_tracking` (`user_id`, `sur_start_time`, `sec_d_start_time`, `sec_d_end_time`, `sec_ns_start_time`, `sec_ns_end_time`, `sec_rf_start_time`, `sec_rf_end_time`, `sec_ar_start_time`, `sec_ar_end_time`, `sec_sp_start_time`, `sec_sp_end_time`, `sec_wrap_start_time`, `sec_wrap_end_time`, `sur_end_time`) VALUES ("+user+", '"+sur_s+"', '"+secd_s+"', '"+secd_e+"', '"+secns_s+"', '"+secns_e+"', '"+secrf_s+"', '"+secrf_e+"', '"+secar_s+"', '"+secar_e+"', '"+secsp_s+"', '"+secsp_e+"', '"+secw_s+"', '"+secw_e+"', '"+sur_e+"')";
+		Log.d("trackquery", trackquery);
 	}
 }
