@@ -34,6 +34,36 @@ public class MainActivity extends Activity {
 	
 	String user;
 	boolean stat=true;
+    private String privateFilePath = Environment.getExternalStorageDirectory()+"/" + "project_talent.pem";
+	private String privateKey = "MIIEpQIBAAKCAQEAoyJEjdaGZ6GbQBtbY+WPbvoDedsZPHURyJPcqrlWi9ZYT7bDePw9E/YGp21b" +
+			"RrepYmTaqbZ7tju0KWUSpTjIQlB6+V4mheFL3wFTgKu7cdKFYFNfBOdWnSo3UA4lVoKoP4sp20yr" +
+			"M8OV/QKmdRjZazdTomLD8vlM6myEbVqdbHhOVaQJP8cqjireDhqQSoPGENpSoCNnSstvP7hkTgK/" +
+			"i1vtZsNgMxPQVcMjoojezl8/KD8+ULQ7NZlnQYtcjqBZGa5DMOGpwK5HBXbTF7UYThTklVOXW5VS" +
+			"hdgI5klIWcSVosdTETkpT7tFgvGXL8hEEi3cPPfXAeWMoyt2JAAAaQIDAQABAoIBADKSAOZnRisB" +
+			"8fqhgGcrVpd0cXdo8B3JvMWM8K8L3URkIeQ0J8xthRGXBuEICW+Wp6+UzCQoKZmIUIU0i98kBxBn" +
+			"mneLNC30dWygIJ6Wnfje5fHCZoZCoJr/5z2t5O04e6eXIFaXIcteKjTQiYFrPpr5/7crHstHdQyG" +
+			"r1am7H4fHezfzPMDJ8asrXAG4fmUM/bxVPCAbce0Hvdp3G8U/CnMKnQ8HiGooV7eqqyhp+GAHhW2" +
+			"U2PCVMXB9KnG3KrsfDQm9pdlgNq2UCBB18sUt/LZ2ET4AwtQf0960nr8oRqwDYvSM2KT6x4KW1m0" +
+			"VAOxT95vE2No+Kt0r/eF3FyCDgECgYEA4lGucTP5cbTLWgn39nv7j6OOVpxgm4eTOvxQxibJ7rgi" +
+			"kNp90Xsry6n6XEXf/S8tsJyT4PUTKm3RXeYISixV/sJz+kDb6/qIxlm7GkNL7tKXQDIvQfQO4s/z" +
+			"N71+PnHMdz5k6r0x5MHk43ZyIoWGABDUhTTHXhPvYuAT+P1U7PECgYEAuIc9McrIF5W5yYONLeME" +
+			"12BgjPPQ7jyrFzyW/8Xs0QrDxEYG7ScC8i3gJYZW3kFkeD5/C8dR7NdsK6+Kc0mg6Csij4X41baI" +
+			"KDsBh8Z+MUzlLqjL0x6YzPUfnQTqvc4l4dvlA2kOM7612up6vxxoBgMTdSRcRanmSxODTb3mKvkC" +
+			"gYEAxn0o5zPURDtyVceEZ/MZEEM75Q5FVGK1Z/g+x2rhk7J+7lgSHRVPtdGgOCk4Z49nHQxWTefj" +
+			"JUUnaJkFEDiOO19D5GnZ977FEmFETaZUBGNCMBVTiR6Jp7cF8w8Il6+qybI5Q/8msSC0pCIPu+Mr" +
+			"QQeBvEoryIDnZOpt2eQlBaECgYEAr0MT5kT5wxzcdv9RijHDGWVajsXMvVo2Dj3oFUrB4NJemf8A" +
+			"+SJCdA8Kg9mSjEqDyIljVaacs1zwSpXR5CocgCboDnVqoGFb9QoGLBVlKiIk0ypTXVQEQTbYLeTL" +
+			"qDcyV9DpNVIEwTTzuNdYekfarUsiofJFCY2TQ99mqOIiyNECgYEAuN+AIe86AT+vJN4gPhs1hPfE" +
+			"EzxmEf1h2EXBeq7Y1p5Fb6K4K3zCTvX02Vei4LK5aCcCT5J69JrO0ivlYOhkQQLkcOZaOWHyBh/f" +
+			"uhtJ38+ghKxrTPYFA1pBUCLmOMFVKds0CiRFqIIM6vAXxZmR4A4kKDd4RBcyKEIpU6dOwQQ=";
+
+    private String publicKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAoyJEjdaGZ6GbQBtbY+WP" +
+            "bvoDedsZPHURyJPcqrlWi9ZYT7bDePw9E/YGp21bRrepYmTaqbZ7tju0KWUSpTjI" +
+            "QlB6+V4mheFL3wFTgKu7cdKFYFNfBOdWnSo3UA4lVoKoP4sp20yrM8OV/QKmdRjZ" +
+            "azdTomLD8vlM6myEbVqdbHhOVaQJP8cqjireDhqQSoPGENpSoCNnSstvP7hkTgK/" +
+            "i1vtZsNgMxPQVcMjoojezl8/KD8+ULQ7NZlnQYtcjqBZGa5DMOGpwK5HBXbTF7UY" +
+            "ThTklVOXW5VShdgI5klIWcSVosdTETkpT7tFgvGXL8hEEi3cPPfXAeWMoyt2JAAA" +
+            "aQIDAQAB";
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -71,23 +101,15 @@ public class MainActivity extends Activity {
 			@Override
 			protected Void doInBackground(Void... params) {
 			String f = Environment.getExternalStorageDirectory()+"/"+user;
-				File folder= new File(f);
-		    //sftp server name-host
-		    String SFTPHOST = "isr-cogusadb.private.isr.umich.edu";
-		    //CHANGE SFTPUSER
-		    //sftp connection username
-		    String SFTPUSER = "isr\\cogusaxfer";
-		    //CHANGE SFTPPASS
-		    //sftp connection password
-		    String SFTPPASS = "mysqlsftp2ISR!";
-		    //CHANGE SFTPWORKINGDIR
-		    //Directory in the remote server to which files are to be uploaded, if this directory doesnt exist, the code will create one.
-		    //String SFTPWORKINGDIR = "uploads/"+user+"_audio";
-		    String SFTPWORKINGDIR = "uploads/0000_audio";
-		    //CHANGE folder
-		    //path to local folder that contains files to upload
+                File folder= new File(f);
 
-		    // STUFF TO CHANGE ABOVE
+
+		    //sftp server name-host
+		    String SFTPHOST = "ec2-54-186-119-217.us-west-2.compute.amazonaws.com";
+		    //sftp connection username
+		    String SFTPUSER = "ec2-user";
+		    //String SFTPWORKINGDIR = "uploads/"+user+"_audio";
+		    String SFTPWORKINGDIR = "uploads/"+user+"_audio";
 		    //port 22 for SFTP
 		    int SFTPPORT = 22;
 		    //creating session to connect to server        
@@ -100,10 +122,9 @@ public class MainActivity extends Activity {
 		    try{
 		           
 		        JSch jsch = new JSch();
+				jsch.addIdentity(privateFilePath);
 		        //creating session
 		        session = jsch.getSession(SFTPUSER,SFTPHOST,SFTPPORT);
-		        //password        
-		        session.setPassword(SFTPPASS);
 		        //configuring the session
 		        java.util.Properties config = new java.util.Properties();
 		        //server properties
@@ -113,9 +134,11 @@ public class MainActivity extends Activity {
 		        //connection to host
 		        session.connect();
 		        //opening SFTP channel
+                Log.d("Status", "Session connected");
 		        channel = session.openChannel("sftp");
 		        //connecting 
 		        channel.connect();
+                Log.d("status", "Channel connected");
 		        channelSftp = (ChannelSftp)channel;
 		        //checking if the remote directory exists, if exists dir_exists flag will not be null and we change to that directory and upload files, if it doesnt exist, we create the directory
 		        try{
@@ -138,32 +161,38 @@ public class MainActivity extends Activity {
 		            System.out.println("Directory "+SFTPWORKINGDIR+" doesn't exist on the server, creating directory.");
 		            Log.d("status","Directory "+SFTPWORKINGDIR+" doesn't exist on the server, creating directory.");
 		        }
-		        //selecting each file from the folder and uploading it
-		        int a=0;
-		        //terminating the connection when done
-				for(File each_file:folder.listFiles()){
-					if(each_file.getName().contains(".mp3")) {
-						UploadData.setaudio(each_file.getName(), a);a++;
-						System.out.println("Uploading " +each_file.toString());
-						Log.d("status","Uploading " +each_file.toString());
-						//System.out.println();
-						channelSftp.put(new FileInputStream(each_file), each_file.getName());
-						System.out.println("Done uploading"+each_file.toString());
-						Log.d("status","Done uploading"+each_file.toString());}
-				}
-				channelSftp.exit();
-		        session.disconnect();
+                //selecting each file from the folder and uploading it
+                int a=0;
+                //terminating the connection when done
+                for(File each_file:folder.listFiles()){
+                    if(each_file.getName().contains(".mp3")) {
+                        UploadData.setaudio(each_file.getName(), a);a++;
+                        System.out.println("Uploading " +each_file.toString());
+                        Log.d("status","Uploading " +each_file.toString());
+                        //System.out.println();
+                        channelSftp.put(new FileInputStream(each_file), each_file.getName());
+                        System.out.println("Done uploading"+each_file.toString());
+                        Log.d("status","Done uploading"+each_file.toString());}
+                }
 		        }
 		        
 		    catch(Exception ex) {
+                Log.d("Exception Occurred", "exception occurred while connecting to the server");
+                Log.d("Excetion", ex.getLocalizedMessage().toString());
 				ex.printStackTrace();
-				channelSftp.exit();
-				session.disconnect();
+
 				stat = false;
 			}
-				if( !stat )
+            finally {
+                if( stat ) {
+                    channelSftp.exit();
+                    channel.disconnect();
+                    session.disconnect();
+                }
+            }
+                if( !stat )
 				{
-					Log.d("Upload audiofile failed","");
+					Log.d("Upload Status", "Upload audio file failed");
 				}
 				else
 				{
